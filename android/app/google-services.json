@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "297391942991",
+    "firebase_url": "https://mymoney-8cf22.firebaseio.com",
+    "project_id": "mymoney-8cf22",
+    "storage_bucket": "mymoney-8cf22.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297391942991:android:f59692af3fe14eacbee93a",
+        "android_client_info": {
+          "package_name": "com.bartolot.mymoney"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "297391942991-m38t4j4qqum6bekob4ssi3si74rq661e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvG6mM6WaDWWeS31sySi9pznAo_XrCXAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "297391942991-m38t4j4qqum6bekob4ssi3si74rq661e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
