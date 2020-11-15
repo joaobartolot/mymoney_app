@@ -8,7 +8,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  FirebaseAuth.instance.signOut();
   bool isLogged = FirebaseAuth.instance.currentUser != null;
 
   runApp(App(initRoute: isLogged ? '/' : '/login'));
