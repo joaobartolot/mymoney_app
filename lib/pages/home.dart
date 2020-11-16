@@ -18,6 +18,12 @@ class HomePage extends StatelessWidget {
 
   final String userUid = FirebaseAuth.instance.currentUser.uid;
 
+  final DateTime today = new DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,6 +70,7 @@ class HomePage extends StatelessWidget {
             stream: db
                 .collection('expense')
                 .where('user_uid', isEqualTo: userUid)
+                .where('date', isGreaterThanOrEqualTo: today)
                 .orderBy('date', descending: true)
                 .snapshots(),
             builder: (context, snapshot) {
