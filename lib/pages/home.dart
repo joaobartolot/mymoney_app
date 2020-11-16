@@ -1,10 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mymoney_app/widgets/expense_form.dart';
 
 class HomePage extends StatelessWidget {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore db = FirebaseFirestore.instance;
 
   final GlobalKey<FormState> formKey = new GlobalKey<FormState>();
 
@@ -14,6 +15,8 @@ class HomePage extends StatelessWidget {
     decimalSeparator: '.',
     thousandSeparator: ',',
   );
+
+  final String userUid = FirebaseAuth.instance.currentUser.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +34,10 @@ class HomePage extends StatelessWidget {
                 priceController: priceController,
               ),
               actions: [
+                FlatButton(
+                  child: Text('Cancel'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
                 RaisedButton(
                   color: Colors.green,
                   shape: RoundedRectangleBorder(
@@ -40,14 +47,11 @@ class HomePage extends StatelessWidget {
                     'Confirm',
                     style: TextStyle(color: Colors.white),
                   ),
-                  onPressed: () {
-                    print(nameController.text);
-                    saveExpense(
-                      name: nameController.text,
-                      value: priceController.numberValue,
-                      date: DateTime.now(),
-                    );
-                  },
+                  onPressed: () => saveExpense(
+                    name: nameController.text,
+                    value: priceController.numberValue,
+                    date: DateTime.now(),
+                  ).then((value) => Navigator.of(context).pop()),
                 )
               ],
             ),
@@ -56,21 +60,67 @@ class HomePage extends StatelessWidget {
       ),
       body: SafeArea(
         child: Center(
-          child: ListView.builder(
-            itemBuilder: (context, i) => Text('item ${i.toString()}'),
-            itemCount: 10,
+          child: StreamBuilder<QuerySnapshot>(
+            stream: db
+                .collection('expense')
+                .where('user_uid', isEqualTo: userUid)
+                .orderBy('date', descending: true)
+                .snapshots(),
+            builder: (context, snapshot) {
+              var data = snapshot.data;
+
+              if (snapshot.hasData && data != null && data.docs.length > 0)
+                return ListView.builder(
+                  itemBuilder: (context, i) => ExpenseItem(
+                    item: data.docs[i],
+                  ),
+                  itemCount: data.docs.length,
+                );
+              return Text(
+                  "You don't have any expense, please click in the add button");
+            },
           ),
         ),
       ),
     );
   }
 
-  void saveExpense({String name, double value, DateTime date}) {
-    firestore.collection('expense').add({
+  Future<DocumentReference> saveExpense(
+      {String name, double value, DateTime date}) {
+    return db.collection('expense').add({
+      'user_uid': userUid,
       'name': name,
       'value': value,
       'date': date,
       'date_updated': DateTime.now(),
     });
+  }
+}
+
+class ExpenseItem extends StatelessWidget {
+  final QueryDocumentSnapshot item;
+  const ExpenseItem({
+    Key key,
+    @required this.item,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text('${item['name'].toString()}'),
+      subtitle: Text('R\$ ${item['value'].toString()}'),
+      trailing: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: InkWell(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.delete_outline),
+          ),
+          onTap: () => item.reference.delete(),
+        ),
+      ),
+    );
   }
 }
