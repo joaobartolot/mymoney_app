@@ -10,15 +10,25 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: TextButton(
-            onPressed: () => Authentication.signOut(
-              context: context,
-            ).then(
-              (value) => Navigator.of(context).pushReplacementNamed('/login'),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () => Authentication.signOut(
+                    context: context,
+                  ).then(
+                    (value) =>
+                        Navigator.of(context).pushReplacementNamed('/login'),
+                  ),
+                  icon: const Icon(Icons.logout),
+                ),
+              ],
             ),
-            child: const Text("Sign out"),
-          ),
+            Column(
+              children: [],
+            )
+          ],
         ),
       ),
     );
