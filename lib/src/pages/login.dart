@@ -1,8 +1,7 @@
 // ignore_for_file: avoid_print
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:my_money/src/service/authentication.dart';
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -13,9 +12,9 @@ class Login extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: GestureDetector(
-            onTap: () => GoogleSignIn().signIn().then(
-                  (value) => Navigator.of(context).pushNamed('/'),
-                ),
+            onTap: () => Authentication.signInWithGoogle(context: context).then(
+              (value) => Navigator.of(context).pushReplacementNamed('/'),
+            ),
             child: Container(
               width: 80,
               height: 80,
