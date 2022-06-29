@@ -1,17 +1,23 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_money/src/pages/home.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:my_money/src/pages/login.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(const MyApp());
+  bool userAuthenticated = FirebaseAuth.instance.currentUser != null;
+
+  runApp(MyApp(initRoute: userAuthenticated ? '/' : '/login'));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final String initRoute;
+
+  const MyApp({Key? key, required this.initRoute}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +27,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: initRoute,
       routes: {
-        '/': (context) => Home(),
+        '/': (context) => const Home(),
+        '/login': (context) => const Login(),
       },
     );
   }
