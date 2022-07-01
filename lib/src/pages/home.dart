@@ -9,10 +9,17 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.of(context).pushNamed('/add-expense'),
+        child: const Icon(
+          Icons.add,
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 IconButton(
                   onPressed: () => Authentication.signOut(
@@ -21,7 +28,10 @@ class Home extends StatelessWidget {
                     (value) =>
                         Navigator.of(context).pushReplacementNamed('/login'),
                   ),
-                  icon: const Icon(Icons.logout),
+                  icon: const Icon(
+                    Icons.logout,
+                    color: Colors.red,
+                  ),
                 ),
               ],
             ),

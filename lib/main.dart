@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_money/src/pages/add_expense.dart';
 import 'package:my_money/src/pages/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:my_money/src/pages/login.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const Home(),
         '/login': (context) => const Login(),
+        '/add-expense': (context) => const AddExpense(),
       },
     );
   }
