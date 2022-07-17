@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:my_money/src/model/expense.dart';
 import 'package:my_money/src/service/authentication.dart';
+import 'package:my_money/src/service/expense.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -35,9 +35,24 @@ class Home extends StatelessWidget {
                 ),
               ],
             ),
-            Column(
-              children: const [],
-            )
+            StreamBuilder<List<Expense>>(
+                stream: ExpenseService().getAll(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<Expense> data = snapshot.data!;
+                    return SizedBox(
+                      height: 100,
+                      child: ListView.builder(
+                        itemCount: data.length,
+                        itemBuilder: (context, index) => Text(
+                          data[index].name,
+                        ),
+                      ),
+                    );
+                  }
+
+                  return const Text('No Items found');
+                })
           ],
         ),
       ),

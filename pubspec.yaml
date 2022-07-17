@@ -38,6 +38,9 @@ dependencies:
   firebase_auth: ^3.3.20
   google_sign_in: ^5.3.3
   provider: ^6.0.3
+  currency_text_input_formatter: ^2.1.7
+  logger: ^1.1.0
+  cloud_firestore: ^3.2.1
 
 dev_dependencies:
   flutter_test:
