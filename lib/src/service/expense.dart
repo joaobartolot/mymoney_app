@@ -10,7 +10,11 @@ class ExpenseService {
       .collection(FirebaseUtil.getCollectionPath('expense'));
 
   Future<DocumentReference<Object?>> save(String name, double price) {
-    Expense expense = Expense(name: name, price: price);
+    Expense expense = Expense(
+      name: name,
+      price: price,
+      createdAt: DateTime.now(),
+    );
 
     var addResponse = _collectionRef.add(expense.toMap());
 
@@ -22,12 +26,11 @@ class ExpenseService {
   }
 
   Stream<List<Expense>> getAll() {
-    return _collectionRef.snapshots().asyncMap((event) {
+    return _collectionRef.orderBy('created_at').snapshots().asyncMap((event) {
       List<Expense> expenses = event.docs.map((e) {
         var data = e.data() as Map<String, dynamic>;
         return Expense.fromMap(e.id, data);
       }).toList();
-      _logger.d(expenses);
 
       return expenses;
     });
