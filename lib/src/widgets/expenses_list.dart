@@ -17,7 +17,12 @@ class ExpensesList extends StatelessWidget {
           itemCount: context.watch<HomeProvider>().expenses.length,
           itemBuilder: (context, index) => Card(
             child: InkWell(
-              onTap: () => Navigator.of(context).pushNamed('/edit-expense'),
+              onTap: () {
+                context.read<EditExpenseProvider>().expense =
+                    context.read<HomeProvider>().expenses[index];
+
+                Navigator.of(context).pushNamed('/edit-expense');
+              },
               child: ListTile(
                 title: Text(
                   context.watch<HomeProvider>().expenses[index].name,

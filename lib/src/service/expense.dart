@@ -35,4 +35,8 @@ class ExpenseService {
       return expenses;
     });
   }
+
+  Future<void> delete(String? uid) {
+    return _collectionRef.doc(uid).delete();
+  }
 }
