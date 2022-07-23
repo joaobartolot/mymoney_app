@@ -10,7 +10,7 @@ class AddExpense extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color text_color = Colors.blue;
+    const Color textColor = Colors.blue;
     return ChangeNotifierProvider(
       create: (_) => NewExpenseProvider(),
       builder: (context, _) => SafeArea(
@@ -21,7 +21,7 @@ class AddExpense extends StatelessWidget {
               title: const Text(
                 'Add expense',
                 style: TextStyle(
-                  color: text_color, // TODO: Change later
+                  color: textColor, // TODO: Change later
                 ),
               ),
               backgroundColor: Colors.white12,

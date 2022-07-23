@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:my_money/src/model/expense.dart';
-import 'package:my_money/src/util/FirebaseUtil.dart';
+import 'package:my_money/src/util/firebase_util.dart';
 
 class ExpenseService {
   final Logger _logger = Logger();
