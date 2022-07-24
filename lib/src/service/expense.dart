@@ -6,8 +6,10 @@ import 'package:my_money/src/util/firebase_util.dart';
 class ExpenseService {
   final Logger _logger = Logger();
 
-  final CollectionReference _collectionRef = FirebaseFirestore.instance
-      .collection(FirebaseUtil.getCollectionPath('expense'));
+  FirebaseFirestore get firestore => FirebaseUtil.getFirestore();
+
+  CollectionReference get collectionRef =>
+      firestore.collection(FirebaseUtil.getCollectionPath('expense'));
 
   Future<DocumentReference<Object?>> save(String name, double price) {
     Expense expense = Expense(
@@ -16,7 +18,7 @@ class ExpenseService {
       createdAt: DateTime.now(),
     );
 
-    var addResponse = _collectionRef.add(expense.toMap());
+    var addResponse = collectionRef.add(expense.toMap());
 
     addResponse
         .then((value) => _logger.i('Expense saved: $value'))
@@ -26,7 +28,7 @@ class ExpenseService {
   }
 
   Stream<List<Expense>> getAll() {
-    return _collectionRef.orderBy('created_at').snapshots().asyncMap((event) {
+    return collectionRef.orderBy('created_at').snapshots().asyncMap((event) {
       List<Expense> expenses = event.docs.map((e) {
         var data = e.data() as Map<String, dynamic>;
         return Expense.fromMap(e.id, data);
@@ -37,6 +39,6 @@ class ExpenseService {
   }
 
   Future<void> delete(String? uid) {
-    return _collectionRef.doc(uid).delete();
+    return collectionRef.doc(uid).delete();
   }
 }
