@@ -40,8 +40,8 @@ class Home extends StatelessWidget {
                   ),
                 ],
               ),
-              StreamBuilder<List<Expense>>(
-                stream: ExpenseService().getAll().map(
+              FutureBuilder<List<Expense>>(
+                future: ExpenseService().getAll().then(
                       (event) => context.read<HomeProvider>().expenses = event,
                     ),
                 builder: (context, snapshot) {

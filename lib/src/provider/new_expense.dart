@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
+import 'package:my_money/src/model/expense.dart';
 import 'package:my_money/src/service/expense.dart';
 
 class NewExpenseProvider extends ChangeNotifier {
@@ -18,7 +18,7 @@ class NewExpenseProvider extends ChangeNotifier {
     _logger.d('The price has changed to : $price');
   }
 
-  Future<DocumentReference<Object?>> save() {
+  Future<Expense> save() {
     _logger.d('Saving expense "$name" that costs: $price');
     return _service.save(name, price);
   }
