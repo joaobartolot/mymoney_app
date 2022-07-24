@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_money/src/pages/edit_expense.dart';
 import 'package:my_money/src/provider/edit_expense.dart';
 import 'package:my_money/src/provider/home.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,18 @@ class ExpensesList extends StatelessWidget {
                 context.read<EditExpenseProvider>().expense =
                     context.read<HomeProvider>().expenses[index];
 
-                Navigator.of(context).pushNamed('/edit-expense');
+                EditExpenseProvider editProvider =
+                    context.read<EditExpenseProvider>();
+
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ListenableProvider<EditExpenseProvider>.value(
+                      value: editProvider,
+                      child: const EditExpense(),
+                    ),
+                  ),
+                );
               },
               child: ListTile(
                 title: Text(
