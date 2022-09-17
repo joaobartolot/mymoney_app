@@ -3,6 +3,7 @@ import 'package:my_money/src/model/expense.dart';
 import 'package:my_money/src/provider/home.dart';
 import 'package:my_money/src/service/authentication.dart';
 import 'package:my_money/src/service/expense.dart';
+import 'package:my_money/src/service/user.dart';
 import 'package:my_money/src/widgets/expenses_list.dart';
 import 'package:provider/provider.dart';
 
@@ -51,7 +52,11 @@ class Home extends StatelessWidget {
 
                   return const Text('No Items found');
                 },
-              )
+              ),
+              ElevatedButton(
+                onPressed: () => UserService().saveUser(),
+                child: const Text("Save test"),
+              ),
             ],
           ),
         ),
