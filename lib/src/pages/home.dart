@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_money/src/model/expense.dart';
+import 'package:my_money/src/model/expense_old.dart';
 import 'package:my_money/src/provider/home.dart';
 import 'package:my_money/src/service/authentication.dart';
 import 'package:my_money/src/service/expense.dart';
@@ -40,7 +40,7 @@ class Home extends StatelessWidget {
                   ),
                 ],
               ),
-              FutureBuilder<List<Expense>>(
+              FutureBuilder<List<Expense_old>>(
                 future: ExpenseService().getAll().then(
                       (event) => context.read<HomeProvider>().expenses = event,
                     ),
@@ -51,7 +51,7 @@ class Home extends StatelessWidget {
 
                   return const Text('No Items found');
                 },
-              )
+              ),
             ],
           ),
         ),

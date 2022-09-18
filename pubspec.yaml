@@ -14,20 +14,24 @@ dependencies:
 
 
   cupertino_icons: ^1.0.2
-  firebase_core: ^1.18.0
+  firebase_core: ^1.20.0
   firebase_auth: ^3.3.20
   google_sign_in: ^5.3.3
   provider: ^6.0.3
   currency_text_input_formatter: ^2.1.7
   logger: ^1.1.0
   cloud_firestore: ^3.2.1
-  fake_cloud_firestore: ^1.2.4
+  cloud_firestore_odm: ^1.0.0-dev.30
+  json_annotation: ^4.6.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^2.0.0
+  build_runner: ^2.2.0
+  cloud_firestore_odm_generator: ^1.0.0-dev.26
+  json_serializable: ^6.3.1
 
 flutter:
 
