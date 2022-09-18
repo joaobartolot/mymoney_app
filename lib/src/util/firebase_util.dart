@@ -15,7 +15,7 @@ class FirebaseUtil {
   static String getCollectionPath(String path) {
     if (Platform.environment.containsKey('FLUTTER_TEST')) return path;
 
-    final String userUid = FirebaseAuth.instance.currentUser?.uid ?? '';
+    final String userUid = FirebaseAuth.instance.currentUser?.uid ?? 'uid';
     return 'users/$userUid/$path';
   }
 }

@@ -57,7 +57,7 @@ class _$UserCollectionReference extends _$UserQuery
     firestore ??= FirebaseFirestore.instance;
 
     return _$UserCollectionReference._(
-      firestore.collection('users').withConverter(
+      firestore.collection('user').withConverter(
             fromFirestore: UserCollectionReference.fromFirestore,
             toFirestore: UserCollectionReference.toFirestore,
           ),
@@ -335,8 +335,6 @@ abstract class UserQuery implements QueryReference<User, UserQuerySnapshot> {
 
 class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
     implements UserQuery {
-  var _$UserFieldMap;
-
   _$UserQuery(
     this.reference,
     this._collection,
@@ -346,6 +344,8 @@ class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
 
   @override
   final Query<User> reference;
+
+  get _$UserFieldMap => null;
 
   UserQuerySnapshot _decodeSnapshot(
     QuerySnapshot<User> snapshot,

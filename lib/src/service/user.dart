@@ -8,6 +8,6 @@ class UserService {
   saveUser() {
     User user = User(name: "john");
 
-    collectionRef.add(user);
+    usersRef.add(user);
   }
 }
