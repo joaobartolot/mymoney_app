@@ -18,7 +18,7 @@ class NewExpenseProvider extends ChangeNotifier {
     _logger.d('The price has changed to : $price');
   }
 
-  Future<Expense> save() {
+  Future<ExpenseDocumentReference> save() {
     _logger.d('Saving expense "$name" that costs: $price');
     return _service.save(name, price);
   }

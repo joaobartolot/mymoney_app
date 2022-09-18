@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logger/logger.dart';
 import 'package:my_money/src/model/expense.dart';
+import 'package:my_money/src/model/expense_old.dart';
 import 'package:my_money/src/util/firebase_util.dart';
 
 class ExpenseService {
@@ -13,51 +15,39 @@ class ExpenseService {
   CollectionReference get collectionRef =>
       firestore.collection(FirebaseUtil.getCollectionPath('expense'));
 
-  Future<Expense> save(String name, double price) {
+  Future<ExpenseDocumentReference> save(String name, double price) {
     Expense expense = Expense(
+      userId: FirebaseAuth.instance.currentUser!.uid,
       name: name,
       price: price,
       createdAt: DateTime.now(),
     );
 
-    var addResponse = collectionRef.add(expense.toMap());
+    Future<ExpenseDocumentReference> future = expenseRef.add(expense);
 
-    addResponse
-        .then((value) => _logger.i('Expense saved: $value'))
-        .onError((error, stackTrace) => _logger.e(error.toString()));
+    future
+        .then((value) => _logger.d('Expense added'))
+        .onError((error, stackTrace) => _logger.e(
+              'Something went wrong',
+              error,
+              stackTrace,
+            ));
 
-    Completer<Expense> completer = Completer();
-
-    addResponse
-        .then((docRef) => docRef.get().then((documentSnapshot) {
-              if (documentSnapshot.data() != null) {
-                Map<String, dynamic> data =
-                    (documentSnapshot.data() as Map<String, dynamic>);
-
-                _logger.i('Expense saved: $data');
-
-                completer.complete(Expense.fromMap(documentSnapshot.id, data));
-              }
-            }).onError((error, stackTrace) {
-              _logger.e(stackTrace);
-
-              completer.completeError(error ?? 'Something went wrong!');
-            }))
-        .onError((error, stackTrace) {
-      _logger.e(stackTrace);
-      completer.completeError(error ?? 'Something went wrong!');
-    });
-
-    return completer.future;
+    return future;
   }
 
-  Future<List<Expense>> getAll() {
-    Completer<List<Expense>> completer = Completer();
+  ExpenseQuery getAllFromUser() {
+    return expenseRef.whereUserId(
+        isEqualTo: FirebaseAuth.instance.currentUser!.uid);
+  }
+
+  Future<List<Expense_old>> getAll() {
+    Completer<List<Expense_old>> completer = Completer();
 
     collectionRef.orderBy('created_at').snapshots().listen((event) {
-      List<Expense> expenses = event.docs.map((e) {
+      List<Expense_old> expenses = event.docs.map((e) {
         var data = e.data() as Map<String, dynamic>;
-        return Expense.fromMap(e.id, data);
+        return Expense_old.fromMap(e.id, data);
       }).toList();
       completer.complete(expenses);
     });
@@ -69,12 +59,12 @@ class ExpenseService {
     return collectionRef.doc(uid).delete();
   }
 
-  Future<void> update(Expense expense) {
+  Future<void> update(Expense_old expense) {
     return collectionRef.doc(expense.uid).update(expense.toMap());
   }
 
-  Future<Expense> getById(String id) {
-    Completer<Expense> completer = Completer();
+  Future<Expense_old> getById(String id) {
+    Completer<Expense_old> completer = Completer();
 
     collectionRef.doc(id).snapshots().listen(
       (documentSnapshot) {
@@ -82,7 +72,7 @@ class ExpenseService {
           Map<String, dynamic> data =
               (documentSnapshot.data() as Map<String, dynamic>);
 
-          completer.complete(Expense.fromMap(documentSnapshot.id, data));
+          completer.complete(Expense_old.fromMap(documentSnapshot.id, data));
         }
       },
     );

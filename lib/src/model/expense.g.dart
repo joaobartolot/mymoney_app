@@ -2,7 +2,7 @@
 
 // ignore_for_file: type=lint
 
-part of 'user.dart';
+part of 'expense.dart';
 
 // **************************************************************************
 // CollectionGenerator
@@ -20,81 +20,81 @@ const _sentinel = _Sentinel();
 /// A collection reference object can be used for adding documents,
 /// getting document references, and querying for documents
 /// (using the methods inherited from Query).
-abstract class UserCollectionReference
+abstract class ExpenseCollectionReference
     implements
-        UserQuery,
-        FirestoreCollectionReference<User, UserQuerySnapshot> {
-  factory UserCollectionReference([
+        ExpenseQuery,
+        FirestoreCollectionReference<Expense, ExpenseQuerySnapshot> {
+  factory ExpenseCollectionReference([
     FirebaseFirestore? firestore,
-  ]) = _$UserCollectionReference;
+  ]) = _$ExpenseCollectionReference;
 
-  static User fromFirestore(
+  static Expense fromFirestore(
     DocumentSnapshot<Map<String, Object?>> snapshot,
     SnapshotOptions? options,
   ) {
-    return _$UserFromJson(snapshot.data()!);
+    return _$ExpenseFromJson(snapshot.data()!);
   }
 
   static Map<String, Object?> toFirestore(
-    User value,
+    Expense value,
     SetOptions? options,
   ) {
-    return _$UserToJson(value);
+    return _$ExpenseToJson(value);
   }
 
   @override
-  CollectionReference<User> get reference;
+  CollectionReference<Expense> get reference;
 
   @override
-  UserDocumentReference doc([String? id]);
+  ExpenseDocumentReference doc([String? id]);
 
   /// Add a new document to this collection with the specified data,
   /// assigning it a document ID automatically.
-  Future<UserDocumentReference> add(User value);
+  Future<ExpenseDocumentReference> add(Expense value);
 }
 
-class _$UserCollectionReference extends _$UserQuery
-    implements UserCollectionReference {
-  factory _$UserCollectionReference([FirebaseFirestore? firestore]) {
+class _$ExpenseCollectionReference extends _$ExpenseQuery
+    implements ExpenseCollectionReference {
+  factory _$ExpenseCollectionReference([FirebaseFirestore? firestore]) {
     firestore ??= FirebaseFirestore.instance;
 
-    return _$UserCollectionReference._(
-      firestore.collection('users').withConverter(
-            fromFirestore: UserCollectionReference.fromFirestore,
-            toFirestore: UserCollectionReference.toFirestore,
+    return _$ExpenseCollectionReference._(
+      firestore.collection('expenses').withConverter(
+            fromFirestore: ExpenseCollectionReference.fromFirestore,
+            toFirestore: ExpenseCollectionReference.toFirestore,
           ),
     );
   }
 
-  _$UserCollectionReference._(
-    CollectionReference<User> reference,
+  _$ExpenseCollectionReference._(
+    CollectionReference<Expense> reference,
   ) : super(reference, reference);
 
   String get path => reference.path;
 
   @override
-  CollectionReference<User> get reference =>
-      super.reference as CollectionReference<User>;
+  CollectionReference<Expense> get reference =>
+      super.reference as CollectionReference<Expense>;
 
   @override
-  UserDocumentReference doc([String? id]) {
+  ExpenseDocumentReference doc([String? id]) {
     assert(
       id == null || id.split('/').length == 1,
       'The document ID cannot be from a different collection',
     );
-    return UserDocumentReference(
+    return ExpenseDocumentReference(
       reference.doc(id),
     );
   }
 
   @override
-  Future<UserDocumentReference> add(User value) {
-    return reference.add(value).then((ref) => UserDocumentReference(ref));
+  Future<ExpenseDocumentReference> add(Expense value) {
+    return reference.add(value).then((ref) => ExpenseDocumentReference(ref));
   }
 
   @override
   bool operator ==(Object other) {
-    return other is _$UserCollectionReference &&
+    return other is _$ExpenseCollectionReference &&
         other.runtimeType == runtimeType &&
         other.reference == reference;
   }
@@ -103,23 +103,23 @@ class _$UserCollectionReference extends _$UserQuery
   int get hashCode => Object.hash(runtimeType, reference);
 }
 
-abstract class UserDocumentReference
-    extends FirestoreDocumentReference<User, UserDocumentSnapshot> {
-  factory UserDocumentReference(DocumentReference<User> reference) =
-      _$UserDocumentReference;
+abstract class ExpenseDocumentReference
+    extends FirestoreDocumentReference<Expense, ExpenseDocumentSnapshot> {
+  factory ExpenseDocumentReference(DocumentReference<Expense> reference) =
+      _$ExpenseDocumentReference;
 
-  DocumentReference<User> get reference;
+  DocumentReference<Expense> get reference;
 
-  /// A reference to the [UserCollectionReference] containing this document.
-  UserCollectionReference get parent {
-    return _$UserCollectionReference(reference.firestore);
+  /// A reference to the [ExpenseCollectionReference] containing this document.
+  ExpenseCollectionReference get parent {
+    return _$ExpenseCollectionReference(reference.firestore);
   }
 
   @override
-  Stream<UserDocumentSnapshot> snapshots();
+  Stream<ExpenseDocumentSnapshot> snapshots();
 
   @override
-  Future<UserDocumentSnapshot> get([GetOptions? options]);
+  Future<ExpenseDocumentSnapshot> get([GetOptions? options]);
 
   @override
   Future<void> delete();
@@ -127,28 +127,30 @@ abstract class UserDocumentReference
   Future<void> update({
     String userId,
     String name,
+    double price,
+    DateTime? createdAt,
   });
 
-  Future<void> set(User value);
+  Future<void> set(Expense value);
 }
 
-class _$UserDocumentReference
-    extends FirestoreDocumentReference<User, UserDocumentSnapshot>
-    implements UserDocumentReference {
-  _$UserDocumentReference(this.reference);
+class _$ExpenseDocumentReference
+    extends FirestoreDocumentReference<Expense, ExpenseDocumentSnapshot>
+    implements ExpenseDocumentReference {
+  _$ExpenseDocumentReference(this.reference);
 
   @override
-  final DocumentReference<User> reference;
+  final DocumentReference<Expense> reference;
 
-  /// A reference to the [UserCollectionReference] containing this document.
-  UserCollectionReference get parent {
-    return _$UserCollectionReference(reference.firestore);
+  /// A reference to the [ExpenseCollectionReference] containing this document.
+  ExpenseCollectionReference get parent {
+    return _$ExpenseCollectionReference(reference.firestore);
   }
 
   @override
-  Stream<UserDocumentSnapshot> snapshots() {
+  Stream<ExpenseDocumentSnapshot> snapshots() {
     return reference.snapshots().map((snapshot) {
-      return UserDocumentSnapshot._(
+      return ExpenseDocumentSnapshot._(
         snapshot,
         snapshot.data(),
       );
@@ -156,9 +158,9 @@ class _$UserDocumentReference
   }
 
   @override
-  Future<UserDocumentSnapshot> get([GetOptions? options]) {
+  Future<ExpenseDocumentSnapshot> get([GetOptions? options]) {
     return reference.get(options).then((snapshot) {
-      return UserDocumentSnapshot._(
+      return ExpenseDocumentSnapshot._(
         snapshot,
         snapshot.data(),
       );
@@ -173,22 +175,26 @@ class _$UserDocumentReference
   Future<void> update({
     Object? userId = _sentinel,
     Object? name = _sentinel,
+    Object? price = _sentinel,
+    Object? createdAt = _sentinel,
   }) async {
     final json = {
       if (userId != _sentinel) "userId": userId as String,
       if (name != _sentinel) "name": name as String,
+      if (price != _sentinel) "price": price as double,
+      if (createdAt != _sentinel) "createdAt": createdAt as DateTime?,
     };
 
     return reference.update(json);
   }
 
-  Future<void> set(User value) {
+  Future<void> set(Expense value) {
     return reference.set(value);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is UserDocumentReference &&
+    return other is ExpenseDocumentReference &&
         other.runtimeType == runtimeType &&
         other.parent == parent &&
         other.id == id;
@@ -198,32 +204,33 @@ class _$UserDocumentReference
   int get hashCode => Object.hash(runtimeType, parent, id);
 }
 
-class UserDocumentSnapshot extends FirestoreDocumentSnapshot<User> {
-  UserDocumentSnapshot._(
+class ExpenseDocumentSnapshot extends FirestoreDocumentSnapshot<Expense> {
+  ExpenseDocumentSnapshot._(
     this.snapshot,
     this.data,
   );
 
   @override
-  final DocumentSnapshot<User> snapshot;
+  final DocumentSnapshot<Expense> snapshot;
 
   @override
-  UserDocumentReference get reference {
-    return UserDocumentReference(
+  ExpenseDocumentReference get reference {
+    return ExpenseDocumentReference(
       snapshot.reference,
     );
   }
 
   @override
-  final User? data;
+  final Expense? data;
 }
 
-abstract class UserQuery implements QueryReference<User, UserQuerySnapshot> {
+abstract class ExpenseQuery
+    implements QueryReference<Expense, ExpenseQuerySnapshot> {
   @override
-  UserQuery limit(int limit);
+  ExpenseQuery limit(int limit);
 
   @override
-  UserQuery limitToLast(int limit);
+  ExpenseQuery limitToLast(int limit);
 
   /// Perform an order query based on a [FieldPath].
   ///
@@ -245,17 +252,17 @@ abstract class UserQuery implements QueryReference<User, UserQuerySnapshot> {
   /// ```dart
   /// collection.orderByTitle(startAt: 'title');
   /// ```
-  UserQuery orderByFieldPath(
+  ExpenseQuery orderByFieldPath(
     FieldPath fieldPath, {
     bool descending = false,
     Object? startAt,
     Object? startAfter,
     Object? endAt,
     Object? endBefore,
-    UserDocumentSnapshot? startAtDocument,
-    UserDocumentSnapshot? endAtDocument,
-    UserDocumentSnapshot? endBeforeDocument,
-    UserDocumentSnapshot? startAfterDocument,
+    ExpenseDocumentSnapshot? startAtDocument,
+    ExpenseDocumentSnapshot? endAtDocument,
+    ExpenseDocumentSnapshot? endBeforeDocument,
+    ExpenseDocumentSnapshot? startAfterDocument,
   });
 
   /// Perform a where query based on a [FieldPath].
@@ -275,7 +282,7 @@ abstract class UserQuery implements QueryReference<User, UserQuerySnapshot> {
   /// ```dart
   /// collection.whereTitle(isEqualTo: 'title');
   /// ```
-  UserQuery whereFieldPath(
+  ExpenseQuery whereFieldPath(
     FieldPath fieldPath, {
     Object? isEqualTo,
     Object? isNotEqualTo,
@@ -290,7 +297,7 @@ abstract class UserQuery implements QueryReference<User, UserQuerySnapshot> {
     bool? isNull,
   });
 
-  UserQuery whereDocumentId({
+  ExpenseQuery whereDocumentId({
     String? isEqualTo,
     String? isNotEqualTo,
     String? isLessThan,
@@ -301,7 +308,7 @@ abstract class UserQuery implements QueryReference<User, UserQuerySnapshot> {
     List<String>? whereIn,
     List<String>? whereNotIn,
   });
-  UserQuery whereUserId({
+  ExpenseQuery whereUserId({
     String? isEqualTo,
     String? isNotEqualTo,
     String? isLessThan,
@@ -312,7 +319,7 @@ abstract class UserQuery implements QueryReference<User, UserQuerySnapshot> {
     List<String>? whereIn,
     List<String>? whereNotIn,
   });
-  UserQuery whereName({
+  ExpenseQuery whereName({
     String? isEqualTo,
     String? isNotEqualTo,
     String? isLessThan,
@@ -323,47 +330,93 @@ abstract class UserQuery implements QueryReference<User, UserQuerySnapshot> {
     List<String>? whereIn,
     List<String>? whereNotIn,
   });
-
-  UserQuery orderByDocumentId({
-    bool descending = false,
-    String startAt,
-    String startAfter,
-    String endAt,
-    String endBefore,
-    UserDocumentSnapshot? startAtDocument,
-    UserDocumentSnapshot? endAtDocument,
-    UserDocumentSnapshot? endBeforeDocument,
-    UserDocumentSnapshot? startAfterDocument,
+  ExpenseQuery wherePrice({
+    double? isEqualTo,
+    double? isNotEqualTo,
+    double? isLessThan,
+    double? isLessThanOrEqualTo,
+    double? isGreaterThan,
+    double? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<double>? whereIn,
+    List<double>? whereNotIn,
+  });
+  ExpenseQuery whereCreatedAt({
+    DateTime? isEqualTo,
+    DateTime? isNotEqualTo,
+    DateTime? isLessThan,
+    DateTime? isLessThanOrEqualTo,
+    DateTime? isGreaterThan,
+    DateTime? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<DateTime?>? whereIn,
+    List<DateTime?>? whereNotIn,
   });
 
-  UserQuery orderByUserId({
+  ExpenseQuery orderByDocumentId({
     bool descending = false,
     String startAt,
     String startAfter,
     String endAt,
     String endBefore,
-    UserDocumentSnapshot? startAtDocument,
-    UserDocumentSnapshot? endAtDocument,
-    UserDocumentSnapshot? endBeforeDocument,
-    UserDocumentSnapshot? startAfterDocument,
+    ExpenseDocumentSnapshot? startAtDocument,
+    ExpenseDocumentSnapshot? endAtDocument,
+    ExpenseDocumentSnapshot? endBeforeDocument,
+    ExpenseDocumentSnapshot? startAfterDocument,
   });
 
-  UserQuery orderByName({
+  ExpenseQuery orderByUserId({
     bool descending = false,
     String startAt,
     String startAfter,
     String endAt,
     String endBefore,
-    UserDocumentSnapshot? startAtDocument,
-    UserDocumentSnapshot? endAtDocument,
-    UserDocumentSnapshot? endBeforeDocument,
-    UserDocumentSnapshot? startAfterDocument,
+    ExpenseDocumentSnapshot? startAtDocument,
+    ExpenseDocumentSnapshot? endAtDocument,
+    ExpenseDocumentSnapshot? endBeforeDocument,
+    ExpenseDocumentSnapshot? startAfterDocument,
+  });
+
+  ExpenseQuery orderByName({
+    bool descending = false,
+    String startAt,
+    String startAfter,
+    String endAt,
+    String endBefore,
+    ExpenseDocumentSnapshot? startAtDocument,
+    ExpenseDocumentSnapshot? endAtDocument,
+    ExpenseDocumentSnapshot? endBeforeDocument,
+    ExpenseDocumentSnapshot? startAfterDocument,
+  });
+
+  ExpenseQuery orderByPrice({
+    bool descending = false,
+    double startAt,
+    double startAfter,
+    double endAt,
+    double endBefore,
+    ExpenseDocumentSnapshot? startAtDocument,
+    ExpenseDocumentSnapshot? endAtDocument,
+    ExpenseDocumentSnapshot? endBeforeDocument,
+    ExpenseDocumentSnapshot? startAfterDocument,
+  });
+
+  ExpenseQuery orderByCreatedAt({
+    bool descending = false,
+    DateTime? startAt,
+    DateTime? startAfter,
+    DateTime? endAt,
+    DateTime? endBefore,
+    ExpenseDocumentSnapshot? startAtDocument,
+    ExpenseDocumentSnapshot? endAtDocument,
+    ExpenseDocumentSnapshot? endBeforeDocument,
+    ExpenseDocumentSnapshot? startAfterDocument,
   });
 }
 
-class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
-    implements UserQuery {
-  _$UserQuery(
+class _$ExpenseQuery extends QueryReference<Expense, ExpenseQuerySnapshot>
+    implements ExpenseQuery {
+  _$ExpenseQuery(
     this.reference,
     this._collection,
   );
@@ -371,25 +424,25 @@ class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
   final CollectionReference<Object?> _collection;
 
   @override
-  final Query<User> reference;
+  final Query<Expense> reference;
 
-  UserQuerySnapshot _decodeSnapshot(
-    QuerySnapshot<User> snapshot,
+  ExpenseQuerySnapshot _decodeSnapshot(
+    QuerySnapshot<Expense> snapshot,
   ) {
     final docs = snapshot.docs.map((e) {
-      return UserQueryDocumentSnapshot._(e, e.data());
+      return ExpenseQueryDocumentSnapshot._(e, e.data());
     }).toList();
 
     final docChanges = snapshot.docChanges.map((change) {
-      return FirestoreDocumentChange<UserDocumentSnapshot>(
+      return FirestoreDocumentChange<ExpenseDocumentSnapshot>(
         type: change.type,
         oldIndex: change.oldIndex,
         newIndex: change.newIndex,
-        doc: UserDocumentSnapshot._(change.doc, change.doc.data()),
+        doc: ExpenseDocumentSnapshot._(change.doc, change.doc.data()),
       );
     }).toList();
 
-    return UserQuerySnapshot._(
+    return ExpenseQuerySnapshot._(
       snapshot,
       docs,
       docChanges,
@@ -397,42 +450,42 @@ class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
   }
 
   @override
-  Stream<UserQuerySnapshot> snapshots([SnapshotOptions? options]) {
+  Stream<ExpenseQuerySnapshot> snapshots([SnapshotOptions? options]) {
     return reference.snapshots().map(_decodeSnapshot);
   }
 
   @override
-  Future<UserQuerySnapshot> get([GetOptions? options]) {
+  Future<ExpenseQuerySnapshot> get([GetOptions? options]) {
     return reference.get(options).then(_decodeSnapshot);
   }
 
   @override
-  UserQuery limit(int limit) {
-    return _$UserQuery(
+  ExpenseQuery limit(int limit) {
+    return _$ExpenseQuery(
       reference.limit(limit),
       _collection,
     );
   }
 
   @override
-  UserQuery limitToLast(int limit) {
-    return _$UserQuery(
+  ExpenseQuery limitToLast(int limit) {
+    return _$ExpenseQuery(
       reference.limitToLast(limit),
       _collection,
     );
   }
 
-  UserQuery orderByFieldPath(
+  ExpenseQuery orderByFieldPath(
     FieldPath fieldPath, {
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
     Object? endAt = _sentinel,
     Object? endBefore = _sentinel,
-    UserDocumentSnapshot? startAtDocument,
-    UserDocumentSnapshot? endAtDocument,
-    UserDocumentSnapshot? endBeforeDocument,
-    UserDocumentSnapshot? startAfterDocument,
+    ExpenseDocumentSnapshot? startAtDocument,
+    ExpenseDocumentSnapshot? endAtDocument,
+    ExpenseDocumentSnapshot? endBeforeDocument,
+    ExpenseDocumentSnapshot? startAfterDocument,
   }) {
     var query = reference.orderBy(fieldPath, descending: descending);
 
@@ -462,10 +515,10 @@ class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
       query = query.endBefore([endBefore]);
     }
 
-    return _$UserQuery(query, _collection);
+    return _$ExpenseQuery(query, _collection);
   }
 
-  UserQuery whereFieldPath(
+  ExpenseQuery whereFieldPath(
     FieldPath fieldPath, {
     Object? isEqualTo,
     Object? isNotEqualTo,
@@ -479,7 +532,7 @@ class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
     List<Object?>? whereNotIn,
     bool? isNull,
   }) {
-    return _$UserQuery(
+    return _$ExpenseQuery(
       reference.where(
         fieldPath,
         isEqualTo: isEqualTo,
@@ -498,7 +551,7 @@ class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
     );
   }
 
-  UserQuery whereDocumentId({
+  ExpenseQuery whereDocumentId({
     String? isEqualTo,
     String? isNotEqualTo,
     String? isLessThan,
@@ -509,7 +562,7 @@ class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
     List<String>? whereIn,
     List<String>? whereNotIn,
   }) {
-    return _$UserQuery(
+    return _$ExpenseQuery(
       reference.where(
         FieldPath.documentId,
         isEqualTo: isEqualTo,
@@ -526,7 +579,7 @@ class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
     );
   }
 
-  UserQuery whereUserId({
+  ExpenseQuery whereUserId({
     String? isEqualTo,
     String? isNotEqualTo,
     String? isLessThan,
@@ -537,9 +590,9 @@ class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
     List<String>? whereIn,
     List<String>? whereNotIn,
   }) {
-    return _$UserQuery(
+    return _$ExpenseQuery(
       reference.where(
-        _$UserFieldMap["userId"]!,
+        _$ExpenseFieldMap["userId"]!,
         isEqualTo: isEqualTo,
         isNotEqualTo: isNotEqualTo,
         isLessThan: isLessThan,
@@ -554,7 +607,7 @@ class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
     );
   }
 
-  UserQuery whereName({
+  ExpenseQuery whereName({
     String? isEqualTo,
     String? isNotEqualTo,
     String? isLessThan,
@@ -565,9 +618,9 @@ class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
     List<String>? whereIn,
     List<String>? whereNotIn,
   }) {
-    return _$UserQuery(
+    return _$ExpenseQuery(
       reference.where(
-        _$UserFieldMap["name"]!,
+        _$ExpenseFieldMap["name"]!,
         isEqualTo: isEqualTo,
         isNotEqualTo: isNotEqualTo,
         isLessThan: isLessThan,
@@ -582,16 +635,72 @@ class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
     );
   }
 
-  UserQuery orderByDocumentId({
+  ExpenseQuery wherePrice({
+    double? isEqualTo,
+    double? isNotEqualTo,
+    double? isLessThan,
+    double? isLessThanOrEqualTo,
+    double? isGreaterThan,
+    double? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<double>? whereIn,
+    List<double>? whereNotIn,
+  }) {
+    return _$ExpenseQuery(
+      reference.where(
+        _$ExpenseFieldMap["price"]!,
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  ExpenseQuery whereCreatedAt({
+    DateTime? isEqualTo,
+    DateTime? isNotEqualTo,
+    DateTime? isLessThan,
+    DateTime? isLessThanOrEqualTo,
+    DateTime? isGreaterThan,
+    DateTime? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<DateTime?>? whereIn,
+    List<DateTime?>? whereNotIn,
+  }) {
+    return _$ExpenseQuery(
+      reference.where(
+        _$ExpenseFieldMap["createdAt"]!,
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  ExpenseQuery orderByDocumentId({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
     Object? endAt = _sentinel,
     Object? endBefore = _sentinel,
-    UserDocumentSnapshot? startAtDocument,
-    UserDocumentSnapshot? endAtDocument,
-    UserDocumentSnapshot? endBeforeDocument,
-    UserDocumentSnapshot? startAfterDocument,
+    ExpenseDocumentSnapshot? startAtDocument,
+    ExpenseDocumentSnapshot? endAtDocument,
+    ExpenseDocumentSnapshot? endBeforeDocument,
+    ExpenseDocumentSnapshot? startAfterDocument,
   }) {
     var query = reference.orderBy(FieldPath.documentId, descending: descending);
 
@@ -621,22 +730,22 @@ class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
       query = query.endBefore([endBefore]);
     }
 
-    return _$UserQuery(query, _collection);
+    return _$ExpenseQuery(query, _collection);
   }
 
-  UserQuery orderByUserId({
+  ExpenseQuery orderByUserId({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
     Object? endAt = _sentinel,
     Object? endBefore = _sentinel,
-    UserDocumentSnapshot? startAtDocument,
-    UserDocumentSnapshot? endAtDocument,
-    UserDocumentSnapshot? endBeforeDocument,
-    UserDocumentSnapshot? startAfterDocument,
+    ExpenseDocumentSnapshot? startAtDocument,
+    ExpenseDocumentSnapshot? endAtDocument,
+    ExpenseDocumentSnapshot? endBeforeDocument,
+    ExpenseDocumentSnapshot? startAfterDocument,
   }) {
     var query =
-        reference.orderBy(_$UserFieldMap["userId"]!, descending: descending);
+        reference.orderBy(_$ExpenseFieldMap["userId"]!, descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -664,22 +773,22 @@ class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
       query = query.endBefore([endBefore]);
     }
 
-    return _$UserQuery(query, _collection);
+    return _$ExpenseQuery(query, _collection);
   }
 
-  UserQuery orderByName({
+  ExpenseQuery orderByName({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
     Object? endAt = _sentinel,
     Object? endBefore = _sentinel,
-    UserDocumentSnapshot? startAtDocument,
-    UserDocumentSnapshot? endAtDocument,
-    UserDocumentSnapshot? endBeforeDocument,
-    UserDocumentSnapshot? startAfterDocument,
+    ExpenseDocumentSnapshot? startAtDocument,
+    ExpenseDocumentSnapshot? endAtDocument,
+    ExpenseDocumentSnapshot? endBeforeDocument,
+    ExpenseDocumentSnapshot? startAfterDocument,
   }) {
     var query =
-        reference.orderBy(_$UserFieldMap["name"]!, descending: descending);
+        reference.orderBy(_$ExpenseFieldMap["name"]!, descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -707,12 +816,98 @@ class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
       query = query.endBefore([endBefore]);
     }
 
-    return _$UserQuery(query, _collection);
+    return _$ExpenseQuery(query, _collection);
+  }
+
+  ExpenseQuery orderByPrice({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    ExpenseDocumentSnapshot? startAtDocument,
+    ExpenseDocumentSnapshot? endAtDocument,
+    ExpenseDocumentSnapshot? endBeforeDocument,
+    ExpenseDocumentSnapshot? startAfterDocument,
+  }) {
+    var query =
+        reference.orderBy(_$ExpenseFieldMap["price"]!, descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$ExpenseQuery(query, _collection);
+  }
+
+  ExpenseQuery orderByCreatedAt({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    ExpenseDocumentSnapshot? startAtDocument,
+    ExpenseDocumentSnapshot? endAtDocument,
+    ExpenseDocumentSnapshot? endBeforeDocument,
+    ExpenseDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy(_$ExpenseFieldMap["createdAt"]!,
+        descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$ExpenseQuery(query, _collection);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is _$UserQuery &&
+    return other is _$ExpenseQuery &&
         other.runtimeType == runtimeType &&
         other.reference == reference;
   }
@@ -721,54 +916,63 @@ class _$UserQuery extends QueryReference<User, UserQuerySnapshot>
   int get hashCode => Object.hash(runtimeType, reference);
 }
 
-class UserQuerySnapshot
-    extends FirestoreQuerySnapshot<User, UserQueryDocumentSnapshot> {
-  UserQuerySnapshot._(
+class ExpenseQuerySnapshot
+    extends FirestoreQuerySnapshot<Expense, ExpenseQueryDocumentSnapshot> {
+  ExpenseQuerySnapshot._(
     this.snapshot,
     this.docs,
     this.docChanges,
   );
 
-  final QuerySnapshot<User> snapshot;
+  final QuerySnapshot<Expense> snapshot;
 
   @override
-  final List<UserQueryDocumentSnapshot> docs;
+  final List<ExpenseQueryDocumentSnapshot> docs;
 
   @override
-  final List<FirestoreDocumentChange<UserDocumentSnapshot>> docChanges;
+  final List<FirestoreDocumentChange<ExpenseDocumentSnapshot>> docChanges;
 }
 
-class UserQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot<User>
-    implements UserDocumentSnapshot {
-  UserQueryDocumentSnapshot._(this.snapshot, this.data);
+class ExpenseQueryDocumentSnapshot
+    extends FirestoreQueryDocumentSnapshot<Expense>
+    implements ExpenseDocumentSnapshot {
+  ExpenseQueryDocumentSnapshot._(this.snapshot, this.data);
 
   @override
-  final QueryDocumentSnapshot<User> snapshot;
+  final QueryDocumentSnapshot<Expense> snapshot;
 
   @override
-  UserDocumentReference get reference {
-    return UserDocumentReference(snapshot.reference);
+  ExpenseDocumentReference get reference {
+    return ExpenseDocumentReference(snapshot.reference);
   }
 
   @override
-  final User data;
+  final Expense data;
 }
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-User _$UserFromJson(Map<String, dynamic> json) => User(
+Expense _$ExpenseFromJson(Map<String, dynamic> json) => Expense(
       userId: json['user_id'] as String,
       name: json['name'] as String,
+      price: (json['price'] as num).toDouble(),
+      createdAt: json['created_at'] == null
+          ? null
+          : DateTime.parse(json['created_at'] as String),
     );
 
-const _$UserFieldMap = <String, String>{
+const _$ExpenseFieldMap = <String, String>{
   'userId': 'user_id',
   'name': 'name',
+  'price': 'price',
+  'createdAt': 'created_at',
 };
 
-Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
+Map<String, dynamic> _$ExpenseToJson(Expense instance) => <String, dynamic>{
       'user_id': instance.userId,
       'name': instance.name,
+      'price': instance.price,
+      'created_at': instance.createdAt?.toIso8601String(),
     };

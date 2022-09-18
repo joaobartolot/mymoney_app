@@ -12,6 +12,10 @@ class FirebaseUtil {
     return FirebaseFirestore.instance;
   }
 
+  static User? getUser() {
+    return FirebaseAuth.instance.currentUser;
+  }
+
   static String getCollectionPath(String path) {
     if (Platform.environment.containsKey('FLUTTER_TEST')) return path;
 

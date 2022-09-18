@@ -1,38 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:my_money/src/model/base.dart';
+import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class Expense implements BaseModel {
+part 'expense.g.dart';
+
+@JsonSerializable(explicitToJson: true)
+class Expense {
   Expense({
-    this.uid,
+    required this.userId,
     required this.name,
     required this.price,
     this.createdAt,
   });
 
-  final String? uid;
-  String name;
-  double price;
-  DateTime? createdAt;
-
-  @override
-  Expense.fromMap(String? uid, Map<String, dynamic> data)
-      : uid = uid ?? '',
-        name = data['name'],
-        price = data['price'],
-        createdAt = (data['created_at'] as Timestamp).toDate();
-
-  @override
-  Map<String, dynamic> toMap() => {
-        'name': name,
-        'price': price,
-        'created_at': createdAt,
-      };
-
-  // static Expense fromMap(String? uid, Map<String, dynamic> data) {
-  //   return Expense(
-  //       uid: uid ?? '',
-  //       name: data['name'],
-  //       price: data['price'],
-  //       createdAt: (data['created_at'] as Timestamp).toDate());
-  // }
+  @JsonKey(name: 'user_id')
+  final String userId;
+  final String name;
+  final double price;
+  @JsonKey(name: 'created_at')
+  final DateTime? createdAt;
 }
+
+@Collection<Expense>('expenses')
+final expenseRef = ExpenseCollectionReference();
